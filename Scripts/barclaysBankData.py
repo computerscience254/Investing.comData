@@ -34,6 +34,7 @@ def get_data():
     data = webscrapper.get_data(url=url, header=urlHeader, data=postData)
     A, B, C, D, E, F, G = webscrapper.parse_data(data)
     webscrapper.generate_csv(A, B, C, D, E, F, G, header=urlHeader)
+    webscrapper.push_to_db(A=A, B=B, C=C, D=D, E=E, F=F, G=G, header=urlHeader)
     
 if __name__ == "__main__":
     get_data()
