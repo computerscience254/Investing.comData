@@ -2,6 +2,10 @@ import requests
 from bs4 import BeautifulSoup
 import pandas as pd
 import os
+import sys
+sys.path.append("..")
+from config import SQLALCHEMY_DATABASE_URI
+from Utilis import seeder
 
 def get_data(url, header, data):
     print("Getting data ......")
@@ -49,3 +53,12 @@ def generate_csv(A, B, C, D, E, F, G, header):
     os.chdir("../")
     df.to_csv("Data/{}".format(title))
     print("Generated csv")
+
+def push_to_db(A, B, C, D, E, F, G, header):
+    print(str(SQLALCHEMY_DATABASE_URI))
+    c , conn = seeder.create_connection(SQLALCHEMY_DATABASE_URI)
+    title = str(header['Referer'][35:].replace("-historical-data", "").replace("-", ""))
+    seeder.sql_insert_company(name=title)
+    length = len(A)
+    for i in range(0,length, 1):
+        seeder.sql_insert_data(date=G[i], price=A[i], open_price=B[i], high=C[i], low=D[i], vol=E[i], name=title, c=c, connection=conn)
