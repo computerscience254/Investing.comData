@@ -24,4 +24,4 @@ def shutdown_session(exception=None):
 if __name__ == '__main__':
     Base.metadata.create_all(bind=engine)
     app.debug=True
-    app.run()
+    app.run("0.0.0.0", port=5000)
